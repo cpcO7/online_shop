@@ -1,0 +1,187 @@
+{% extends "apps/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-3 btn-reveal-trigger">
+                <div class="card-header position-relative min-vh-25 mb-8">
+                    <form id="profile-cover-update-form" action="{% url 'user_update' %}" method="post"
+                          enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="cover-image">
+                            <div class="bg-holder rounded-3 rounded-bottom-0"
+                                 style="background-image:url({{ user.banner.url }});">
+                            </div>
+                            <!--/.bg-holder-->
+
+                            <input class="d-none" id="upload-cover-image" name="banner" type="file" accept="image/*"
+                                   onchange="submitProfileCoverForm()"/>
+                            <label class="cover-image-file-input" for="upload-cover-image"><span
+                                    class="fas fa-camera me-2"></span><span>Change cover photo</span></label>
+                        </div>
+                    </form>
+                    <form id="profile-image-update-form" action="{% url 'user_update' %}" method="post"
+                          enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="avatar avatar-5xl avatar-profile shadow-sm img-thumbnail rounded-circle">
+                            <div class="h-100 w-100 rounded-circle overflow-hidden position-relative">
+                                <img id="profile-image-display" src="{{ user.image.url }}" width="200" alt=""
+                                     data-dz-thumbnail="data-dz-thumbnail"/>
+                                <input class="d-none" id="profile-image" name="image" type="file" accept="image/*"
+                                       onchange="submitProfileImageForm()"/>
+                                <label class="mb-0 overlay-icon d-flex flex-center" for="profile-image">
+                                    <span class="bg-holder overlay overlay-0"></span>
+                                    <span class="z-index-1 text-white dark__text-white text-center fs--1">
+                    <span class="fas fa-camera"></span>
+                    <span class="d-block">Update</span>
+                </span>
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                    <script>
+                        function submitProfileCoverForm() {
+                            const form = document.getElementById('profile-cover-update-form');
+                            form.submit();
+                        }
+                    </script>
+
+                    <script>
+                        function submitProfileImageForm() {
+                            const form = document.getElementById('profile-image-update-form');
+                            form.submit();
+                        }
+                    </script>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row g-0">
+        <div class="col-lg-8 pe-lg-2">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5 class="mb-0">Profile Settings</h5>
+                </div>
+                <div class="card-body bg-light">
+                    <form class="row g-3" action="{% url 'user_update' %}" method="post">
+                        {% csrf_token %}
+                        <div class="col-lg-6">
+                            <label class="form-label" for="first-name">First Name</label>
+                            <input class="form-control" id="first-name" type="text" value="{{ user.first_name }}"
+                                   name="first_name"/>
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="form-label" for="last-name">Last Name</label>
+                            <input class="form-control" id="last-name" type="text" value="{{ user.last_name }}"
+                                   name="last_name"/>
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="form-label" for="region">Region</label>
+                            <select class="form-control" id="region" name="region">
+                                <option value="">Select Region</option>
+                                {% for region in regions %}
+                                    <option value="{{ region.id }}"
+                                            {% if user.district and user.district.region_id == region.id %}selected{% endif %}>{{ region.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="form-label" for="district">District</label>
+                            <select class="form-control" id="district" name="district">
+                                <option value="">Select District</option>
+                                {% if user.district %}
+                                    <option value="{{ user.district.id }}" selected>{{ user.district.title }}</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="form-label" for="address">Address</label>
+                            <input class="form-control" id="address" type="text"
+                                   value="{{ user.address|default_if_none:"" }}"
+                                   name="address"/>
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="form-label" for="telegram_id">Telegram ID</label>
+                            <input class="form-control" id="telegram_id" type="text"
+                                   value="{{ user.telegram_id|default_if_none:"" }}"
+                                   name="telegram_id"/>
+                        </div>
+                        <div class="col-lg-12">
+                            <label class="form-label" for="bio">Bio</label>
+                            <textarea class="form-control" id="bio" name="bio" cols="30"
+                                      rows="13">{{ user.bio|default_if_none:"" }}</textarea>
+                        </div>
+                        <div class="col-12 d-flex justify-content-end">
+                            <button class="btn btn-primary" type="submit">Update</button>
+                        </div>
+                    </form>
+
+                    <script>
+                        document.getElementById('region').addEventListener('change', function () {
+                            var regionId = this.value;
+                            if (regionId) {
+                                fetch(`/get-districts/?region_id=${regionId}`)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        var districtSelect = document.getElementById('district');
+                                        districtSelect.innerHTML = '<option value="">Select District</option>';
+                                        data.forEach(function (district) {
+                                            districtSelect.innerHTML += `<option value="${district.id}">${district.title}</option>`;
+                                        });
+                                    });
+                            } else {
+                                document.getElementById('district').innerHTML = '<option value="">Select District</option>';
+                            }
+                        });
+                    </script>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 ps-lg-2">
+            <div class="sticky-sidebar">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5 class="mb-0">Change Password</h5>
+                    </div>
+                    <div class="card-body bg-light">
+                        <form action="{% url 'user_update' %}" method="post" id="password-form">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label class="form-label" for="old-password">Old Password</label>
+                                <input class="form-control" id="old-password" name="old-password" type="password"
+                                       required/>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="new-password">New Password</label>
+                                <input class="form-control" id="new-password" name="new-password" type="password"
+                                       required/>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="confirm-password">Confirm Password</label>
+                                <input class="form-control" id="confirm-password" type="password" required/>
+                            </div>
+                            <button class="btn btn-primary d-block w-100" type="submit">Update Password</button>
+                        </form>
+
+                        <script>
+                            document.getElementById('password-form').addEventListener('submit', function (event) {
+                                var newPassword = document.getElementById('new-password').value;
+                                var confirmPassword = document.getElementById('confirm-password').value;
+
+                                if (newPassword !== confirmPassword) {
+                                    event.preventDefault();
+                                    alert('New password and confirm password do not match.');
+                                }
+                            });
+                        </script>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

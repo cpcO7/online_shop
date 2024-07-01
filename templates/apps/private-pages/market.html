@@ -1,0 +1,194 @@
+{% extends "apps/base.html" %}
+
+{% block content %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <!-- Modal -->
+            {#            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"#}
+            {#                 aria-hidden="true">#}
+            {#                <div class="modal-dialog" role="document">#}
+            {#                    <div class="modal-content">#}
+            {#                        <div class="modal-header">#}
+            {#                            <h5 class="modal-title" id="exampleModalLabel">Oqim yaratish</h5>#}
+            {#                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+            {#                                <span aria-hidden="true">&times;</span>#}
+            {#                            </button>#}
+            {#                        </div>#}
+            {#                        <div class="modal-body">#}
+            {#                            <form class="form-class" action="{% url 'create-stream' %}" method="post" >#}
+            {#                                {% csrf_token %}#}
+            {#                                #}
+            {#                                <input type="hidden" name="csrfmiddlewaretoken"#}
+            {#                                       value="vybnCLAz1XOITunMGOfxb2dv24FEF9QldPZFL0PgAIuQZHy2biuQbmhxFch49Ole">#}
+            {#                                <input name="product_id" type="hidden" id="hidden_product" value="test">#}
+            {##}
+            {#                                Oqim nomi <input type="text" name="title" class="form-control" placeholder#}
+            {#                                                 mt-2="Oqim uchun nom kiriting" required id="id_title">#}
+            {##}
+            {#                                Chegirma <input type="text" name="discount" class="form-control" placeholder#}
+            {#                                                mt-2="Chegirma miqdori: {{ product.benefit }} so&#x27;mgacha"#}
+            {#                                                id="id_discount">#}
+            {##}
+            {#                                <input type="submit" class="btn btn-primary mt-4" value="Oqim yaratish">#}
+            {#                            </form>#}
+            {#                        </div>#}
+            {#                    </div>#}
+            {#                </div>#}
+            {#            </div>#}
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <!-- Modal content -->
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Oqim yaratish</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="modal-body">
+                                <form method="post" class="form-class" action="{% url 'create-stream' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="product" id="hidden_product" value="{{ product.id }}">
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="name" class="form-label">Oqim nomi</label>
+                                            <input type="text" name="title" class="form-control" placeholder="Oqim nomi"
+                                                   required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="discount" class="form-label">Chegirma</label>
+                                            <input type="text" name="discount" class="form-control"
+                                                   placeholder="Chegirma miqdori" id="id_discount">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="additional_benefit" class="form-label">Qo'shimcha foyda</label>
+                                            <input type="text" name="benefit" class="form-control"
+                                                   placeholder="Qo'shimcha foyda" id="id_additional_benefit">
+                                        </div>
+                                        <div class="form-check mb-3">
+                                            <input type="checkbox" name="paid_delivery" class="form-check-input"
+                                                   id="id_paid_delivery">
+                                            <label class="form-check-label" for="paid_delivery">Pullik dostavka</label>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">Oqim yaratish</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <br>
+                <br>
+                <h3 class="text-center"> Hozirda sotuvda bor <br> mahsulotlar </h3>
+                <br>
+
+                <div class="container border-bottom-4">
+                    <div class="header_tab_menu">
+                        <div class="header_menu" style="overflow: auto">
+                            {% for category in categories %}
+                                <a href="?category={{ category.slug }}"
+                                   class="btn btn-default"> {{ category.title }}</a>
+                            {% endfor %}
+
+                        </div>
+                        <div class="search-box" style="width: 100%;">
+                            <form action="/admin_page/market/" method="GET" class="position-relative"
+                                  style="width: 100%"
+                                  data-bs-display="static" autocomplete="off">
+                                <input type="hidden" name="csrfmiddlewaretoken"
+                                       value="vybnCLAz1XOITunMGOfxb2dv24FEF9QldPZFL0PgAIuQZHy2biuQbmhxFch49Ole">
+                                <input id="search-input" name="q" class="form-control search-input" type="search"
+                                       placeholder="Qidiruv..." aria-label="Search"/>
+                                <span class="fas fa-search search-box-icon"></span>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    {% for product in products %}
+                        <div class="col-sm-4 p-2">
+                            <div class="card">
+                                <a href="{% url 'product_detail_page' product.pk %}" target="_blank">
+                                    <img class="card-img-top" src="{{ product.image.url }}"
+                                         alt="Bassen Stoykalik 220ga 150x60 1tonna 660 litr">
+                                </a>
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <a href="/product-detail/bassen-stoykalik-220ga-150x60-1tonna-660-litr"
+                                           target="_blank">
+                                            {{ product.title }}
+                                        </a>
+                                    </h5>
+                                    <p class="text-muted"> {{ product.price }} so'm </p>
+                                </div>
+
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">To'lov: <strong>60000 </strong></li>
+
+                                    <li class="list-group-item">Zaxirada: <strong> 760 ta </strong>
+                                    </li>
+
+                                    <li class="list-group-item">Chegirma: <strong> yuq </strong>
+                                    </li>
+
+                                </ul>
+
+                                <!-- <form method="post"> <input type="hidden" name="csrfmiddlewaretoken" value="vybnCLAz1XOITunMGOfxb2dv24FEF9QldPZFL0PgAIuQZHy2biuQbmhxFch49Ole"> <input type="hidden" name="product_id" value="442"> <input type="submit" value="Oqim yaratish" class="btn btn-primary"> </form> -->
+
+                                <a href="https://t.me/alijahon_uz_Internet_magazin/1523"
+                                   class="btn bg-danger text-white mt-2">Reklama
+                                    Posti</a>
+                                <button class="btn btn-primary btn_open_modal" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal" name="442">
+                                    Oqim yaratish
+                                </button>
+                                <a href="/admin_page/product/442" class="btn bg-danger text-white mt-2">Batafsil</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+
+
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+
+                            {% if page_obj.has_previous %}
+                                <li class="page-link"><a
+                                        href="?page={{ page_obj.previous_page_number }}">previous</a></li>
+                            {% endif %}
+
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if num == page_obj.number %}
+                                    <li class="page-link" style="background-color: #4379DE"><a
+                                            style="color: #ffffff;"
+                                            href="?page={{ num }}">{{ num }}</a></li>
+                                {% elif page_obj.number|add:'-2' < num and num < page_obj.number|add:'2' %}
+                                    <li class="page-link"><a href="?page={{ num }}">{{ num }}</a></li>
+                                {% endif %}
+
+
+                            {% endfor %}
+                            {% if page_obj.has_next %}
+                                <li class="page-link"><a href="?page={{ page_obj.next_page_number }}">next</a></li>
+                            {% endif %}
+
+
+                        </ul>
+                    </nav>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
