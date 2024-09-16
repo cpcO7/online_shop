@@ -1,9 +1,13 @@
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-4%&apdlp^me54$b5bj73)!i8^m6r4v$ze^ycby^5uqidf+!ikk'
+
+load_dotenv()
 
 DEBUG = True
 
@@ -57,8 +61,12 @@ WSGI_APPLICATION = 'root.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv("DB_NAME"),
+        'USER': os.getenv("DB_USER"),
+        'PASSWORD': os.getenv("DB_PASSWORD"),
+        'HOST': os.getenv("DB_HOST"),
+        'PORT': os.getenv("DB_PORT"),
     }
 }
 
@@ -321,5 +329,6 @@ JAZZMIN_SETTINGS = {
     # Add a language dropdown into the admin
 }
 
-
 LOGIN_URL = '/login/'
+
+handler404 = "Apps.views.Error404"

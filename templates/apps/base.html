@@ -11,20 +11,24 @@
 
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apps/assets/img/favicons/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'apps/assets/img/favicons/favicon-32x32.png"' %}>
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'apps/assets/img/favicons/favicon-16x16.png"' %}>
+    <link rel=" icon
+    " type="image/png" sizes="16x16" href="{% static 'apps/assets/img/favicons/favicon-16x16.png"' %}>
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'apps/assets/img/favicons/favicon.ico"' %}>
-    <link rel="manifest" href="{% static 'apps/assets/img/favicons/manifest.json"' %}>
+    <link rel=" manifest
+    " href="{% static 'apps/assets/img/favicons/manifest.json"' %}>
     <meta name="msapplication-TileImage" content="{% static 'apps/assets/img/favicons/mstile-150x150.png' %}">
     <meta name="theme-color" content="#ffffff">
-    <link href="{% static 'apps/vendors/swiper/swiper-bundle.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'apps/vendors/swiper/swiper-bundle.min.css' %}" rel="stylesheet"/>
     <script src="{% static 'apps/assets/js/config.js' %}"></script>
     <script src="{% static 'apps/assets/js/lightbox.min.js' %}"></script>
     <script src="{% static 'apps/vendors/overlayscrollbars/OverlayScrollbars.min.js' %}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
-    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css"
+          rel="stylesheet" type="text/css"/>
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700%7cPoppins:300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700%7cPoppins:300,400,500,600,700,800,900&amp;display=swap"
+          rel="stylesheet">
     <link href="{% static 'apps/vendors/overlayscrollbars/OverlayScrollbars.min.css' %}" rel="stylesheet">
     <link href="{% static 'apps/assets/css/theme-rtl.min.css' %}" rel="stylesheet" id="style-rtl">
     <link href="{% static 'apps/assets/css/theme.min.css' %}" rel="stylesheet" id="style-default">
@@ -33,6 +37,8 @@
     <link href="{% static 'apps/assets/css/style.css' %}" rel="stylesheet">
     <link href="{% static 'apps/assets/css/lightbox.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         var isRTL = JSON.parse(localStorage.getItem('isRTL'));
@@ -69,7 +75,7 @@
         <div class="content">
             {% include 'apps/parts/header.html' %}
             {% block content %}
-                
+
             {% endblock %}
         </div>
     </div>
@@ -100,17 +106,35 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
 
+<script>
+    $(document).ready(function () {
+        // Handle form submission
+        $('form').submit(function (event) {
+            // Prevent the form from submitting
+            event.preventDefault();
 
-{##}
-{#{% block click_btn_js %}{% endblock %}#}
-{#{% block main_js %}{% endblock %}#}
-{#{% block stream_js %}{% endblock %}#}
-{#{% block phone_number_js %}{% endblock %}#}
-{#{% block region_district_js %}{% endblock %}#}
-{#{% block request_status_js %}{% endblock %}#}
-{#{% block content %}#}
-	
-{#{% endblock %}#}
+            // Get the phone number input value
+            var phoneInput = $('#phone-mask').val();
+
+            // Modify the input value to remove the country code and any non-digit characters
+            var modifiedPhoneInput = phoneInput.replace(/^\+998|\D/g, '');
+
+            // Set the modified value back to the input field
+            var newInput = $('<input>').attr({
+                type: 'hidden',
+                name: 'username',
+                value: modifiedPhoneInput
+            });
+
+            // Append the new input element to the form
+            $(this).append(newInput);
+
+            // Now unbind the submit event handler and submit the form
+            $(this).unbind('submit').submit();
+        });
+    });
+</script>
+
 </body>
 </html>
 

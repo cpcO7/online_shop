@@ -16,16 +16,18 @@
                     <div class="card-body">
                         <div class="col-lg-8 swiper-container">
 
-                            <form method="post">
-                                <input type="hidden" name="csrfmiddlewaretoken"
-                                       value="mGJzrMo3ue94ZQsZlcAEk0p948bzwtJ64XxRA1DK3ZPc53DfQGPXkktbHgNZ08eZ">
+                            <form action="{% url 'order_confirm_page' product.pk %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="stream" value="{{ stream_id }}">
+                                <input type="hidden" name="product"
+                                       value="{{ product.pk }}">
                                 <div class="mb-2">
                                     <label class="form-label" for="formGroupNameInput">Ism:</label>
-                                    <input class="form-control" name="full_name" id="formGroupNameInput" type="text"/>
+                                    <input class="form-control" name="name" id="formGroupNameInput" type="text"/>
                                 </div>
 
                                 <div class="mb-4">
-                                    <label class="form-label" for="formGroupEmailInput">Telefon nomer:</label>
+                                    <label class="form-label" for="phone-mask">Telefon nomer:</label>
                                     <input class="form-control" id="phone-mask" required name="phone_number"
                                            type="text"/>
                                 </div>
@@ -39,12 +41,20 @@
                                     <button class="btn btn-primary" type="submit">Buyurtma berish</button>
                                 </div>
                             </form>
+                            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
+                            <script>
+                                $('#phone-mask').inputmask({
+                                    "mask": "+\\9\\98(99) 999-99-99"
+                                });
+
+                            </script>
                         </div>
                         <div class="row">
                             <div class="col-lg-8 swiper-container" style="margin-top: 20px;">
 
 
-                                <img src="{{ object.image.url }}" alt=""
+                                <img src="{{ product.image.url }}" alt=""
                                      class="img-main mb-3 img-fluid">
 
 
@@ -55,14 +65,14 @@
                         </div>
                         <div class="col-lg-8 swiper-container">
                             <h5>
-                                {{ object.title }}
+                                {{ product.title }}
                             </h5>
                             <p class="fs--1">
-                            <p>{{ object.title }}&nbsp;</p>
+                            <p>{{ product.title }}&nbsp;</p>
 
                             <p>&nbsp;</p>
 
-                            {{ object.description | safe  }}
+                            {{ product.description | safe }}
 
                             <p>&nbsp;</p>
 
@@ -70,7 +80,7 @@
                             </p>
                             <h4 class="d-flex align-items-center">
                 <span class="text-warning me-2">
-                {{ object.price }} so'm
+                {{ price }} so'm
                 </span>
 
 
@@ -85,5 +95,4 @@
     </main>
 
 
-    </html>
 {% endblock %}  

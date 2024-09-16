@@ -23,15 +23,53 @@
                                             <h3>Kirish</h3>
                                         </div>
                                     </div>
+                                    {#                                    <form action="{% url 'login_page' %}" method="post">#}
+                                    {#                                        {% csrf_token %}#}
+                                    {#                                        <div class="mb-3">#}
+                                    {#                                            <div class="d-flex justify-content-between">#}
+                                    {#                                                <label class="form-label" for="split-login-email">#}
+                                    {#                                                    Telefon nomer</label>#}
+                                    {#                                            </div>#}
+                                    {#                                            <input type="text" name="username" id="phone-mask" class="form-control">#}
+                                    {#                                        </div>#}
+                                    {#                                        <div class="mb-3">#}
+                                    {#                                            <div class="d-flex justify-content-between">#}
+                                    {#                                                <label class="form-label" for="split-login-password">Parol</label>#}
+                                    {#                                            </div>#}
+                                    {#                                            <input class="form-control" name="password" id="split-login-password"#}
+                                    {#                                                   type="password">#}
+                                    {#                                        </div>#}
+                                    {#                                        <div class="row flex-between-center">#}
+                                    {#                                            <div class="col-auto">#}
+                                    {#                                                <div class="form-check mb-0">#}
+                                    {#                                                    <input class="form-check-input" autocomplete="on"#}
+                                    {#                                                           type="checkbox"#}
+                                    {#                                                           id="split-checkbox">#}
+                                    {#                                                    <label class="form-check-label mb-0" for="split-checkbox">#}
+                                    {#                                                        Men qoidalar bilan tanishdim</label>#}
+                                    {#                                                </div>#}
+                                    {#                                            </div>#}
+                                    {##}
+                                    {#                                            <div class="col-auto">#}
+                                    {#                                                <a class="fs--1" href="#">#}
+                                    {#                                                    Foydalanish shartlari#}
+                                    {#                                                </a>#}
+                                    {#                                            </div>#}
+                                    {#                                        </div>#}
+                                    {#                                        <div class="mb-3">#}
+                                    {#                                            <button class="btn btn-primary d-block w-100 mt-3" type="submit"#}
+                                    {#                                                    name="submit">#}
+                                    {#                                                Kirish#}
+                                    {#                                            </button>#}
+                                    {#                                        </div>#}
+                                    {#                                    </form>#}
                                     <form action="{% url 'login_page' %}" method="post">
                                         {% csrf_token %}
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between">
-                                                <label class="form-label" for="split-login-email">
-                                                    Telefon nomer</label>
+                                                <label class="form-label" for="phone-mask">Telefon nomer</label>
                                             </div>
-                                            <input type="text" name="username" id="phone-mask"
-                                                   class="form-control">
+                                            <input type="text" name="username" id="phone-mask" class="form-control">
                                         </div>
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between">
@@ -43,27 +81,33 @@
                                         <div class="row flex-between-center">
                                             <div class="col-auto">
                                                 <div class="form-check mb-0">
-                                                    <input class="form-check-input" autocomplete="on"
-                                                           type="checkbox"
+                                                    <input class="form-check-input" autocomplete="on" type="checkbox"
                                                            id="split-checkbox">
-                                                    <label class="form-check-label mb-0" for="split-checkbox">
-                                                        Men qoidalar bilan tanishdim</label>
+                                                    <label class="form-check-label mb-0" for="split-checkbox">Men
+                                                        qoidalar bilan tanishdim</label>
                                                 </div>
                                             </div>
-
                                             <div class="col-auto">
-                                                <a class="fs--1" href="#">
-                                                    Foydalanish shartlari
-                                                </a>
+                                                <a class="fs--1" href="#">Foydalanish shartlari</a>
                                             </div>
                                         </div>
                                         <div class="mb-3">
                                             <button class="btn btn-primary d-block w-100 mt-3" type="submit"
-                                                    name="submit">
-                                                Kirish
+                                                    name="submit">Kirish
                                             </button>
                                         </div>
                                     </form>
+
+                                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
+                                    <script>
+                                        $('#phone-mask').inputmask({
+                                            "mask": "+\\9\\98(99) 999-99-99"
+                                        });
+                                       
+                                    </script>
+
+
                                 </div>
                             </div>
                         </div>
@@ -76,3 +120,4 @@
     </main>
 
 {% endblock %}
+

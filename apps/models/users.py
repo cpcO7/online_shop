@@ -11,6 +11,7 @@ class User(AbstractUser):
         ADMIN = 'admin', 'Admin'
         DRIVER = 'kuryer', 'Kuryer'
         USER = 'foydalanuvchi', 'Foydalanuvchi'
+        COURIER = 'yetkazib beruvchi', 'Yetkazib beruvchi'
 
     image = ImageField(upload_to="user/", default="user/User-avatar.png")
     phone_number = CharField(max_length=50, unique=True)

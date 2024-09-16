@@ -38,4 +38,9 @@ class Stream(TimeBaseModel):
     product = ForeignKey("apps.Product", CASCADE, related_name="urls")
     user = ForeignKey("apps.User", CASCADE, related_name="urls")
     discount = BigIntegerField(db_default=0)
-    benefit = PositiveIntegerField(db_default=0)
+    views_count = IntegerField(db_default=0)
+
+
+class Wishlist(Model):
+    product = ForeignKey("apps.Product", CASCADE, related_name="wishes")
+    user = ForeignKey("apps.User", CASCADE, related_name="wishes")
